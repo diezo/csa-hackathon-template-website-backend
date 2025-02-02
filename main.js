@@ -14,23 +14,6 @@ const CLUSTER_NAME = "Cluster0", DATABASE_NAME = "hackathon-template";
 
 app.use(express.json());  // Middleware to Parse JSON Body
 
-// Connect to Atlas Database
-async function mongoConnect()
-{
-  try
-  {
-    const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.pms6w.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority&appName=${CLUSTER_NAME}`
-    
-    await mongoose.connect(uri);
-    console.log("MongoDB Connection Succeeded!");
-  }
-  catch (err)
-  {
-    console.log("Connection to MongoDB Failed: " + err);
-    process.exit(1);
-  }
-}
-
 // Endpoint: Get Hackathon Details
 app.get("/details", async (req, res) => {
   try
@@ -72,7 +55,26 @@ app.post("/register", async (req, res) => {
   }
 });
 
+// Connect to Atlas Database
+async function mongoConnect()
+{
+  console.log("Connecting to MongoDB Cluster...");
+
+  try
+  {
+    const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.pms6w.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority&appName=${CLUSTER_NAME}`
+    
+    await mongoose.connect(uri);
+    console.log("MongoDB Connection Succeeded!");
+  }
+  catch (err)
+  {
+    console.log("Connection to MongoDB Failed: " + err);
+    process.exit(1);
+  }
+}
+
 // Connect to MongoDB Atlas
 mongoConnect().then(() => {
-  app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));  // Start Server
+  app.listen(PORT, () => console.log(`\nListening on port ${PORT}...`));  // Start Server
 });
