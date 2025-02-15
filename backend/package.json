@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "moment-timezone": "^0.5.47",
@@ -14,5 +15,9 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
-  }
+  },
+  "main": "main.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
