@@ -1,17 +1,20 @@
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
+import cors from "cors"; // Import CORS
 
 import RegistrationModel from "./models/registration.js";
 import HackathonDetailsModel from "./models/hackathonDetails.js";
+import runServer from "../registrationForm/server.js"; // Import server.js
 
-dotenv.config();
+dotenv.config({ path: './.env' }); // Load environment variables from .env file in the same directory
 const app = express();
 
 // Configurations
 const PORT = 80;
 const CLUSTER_NAME = "Cluster0", DATABASE_NAME = "hackathon-template";
 
+app.use(cors()); // Enable CORS
 app.use(express.json());  // Middleware to Parse JSON Body
 
 // Endpoint: Get Hackathon Details
@@ -31,7 +34,7 @@ app.get("/details", async (req, res) => {
 });
 
 // Endpoint: Post Registration Form Data
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => { // Update endpoint URL
   const registration = new RegistrationModel(req.body);
 
   try
@@ -62,8 +65,8 @@ async function mongoConnect()
 
   try
   {
-    const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.pms6w.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority&appName=${CLUSTER_NAME}`
-    
+    const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.psph3.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority&appName=${CLUSTER_NAME}`
+
     await mongoose.connect(uri);
     console.log("MongoDB Connection Succeeded!");
   }
@@ -74,7 +77,8 @@ async function mongoConnect()
   }
 }
 
-// Connect to MongoDB Atlas
+// Connect to MongoDB Atlas and run the server
 mongoConnect().then(() => {
   app.listen(PORT, () => console.log(`\nListening on port ${PORT}...`));  // Start Server
+  runServer(); // Run the server from server.js
 });
