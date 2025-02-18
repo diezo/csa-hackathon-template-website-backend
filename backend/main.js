@@ -7,7 +7,7 @@ import RegistrationModel from "./models/registration.js";
 import HackathonDetailsModel from "./models/hackathonDetails.js";
 import runServer from "../registrationForm/server.js"; // Import server.js
 
-dotenv.config();
+dotenv.config({ path: './.env' }); // Load environment variables from .env file in the same directory
 const app = express();
 
 // Configurations
@@ -65,8 +65,8 @@ async function mongoConnect()
 
   try
   {
-    const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.pms6w.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority&appName=${CLUSTER_NAME}`
-    
+    const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.psph3.mongodb.net/${DATABASE_NAME}?retryWrites=true&w=majority&appName=${CLUSTER_NAME}`
+
     await mongoose.connect(uri);
     console.log("MongoDB Connection Succeeded!");
   }
